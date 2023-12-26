@@ -1,0 +1,127 @@
+import React, { useEffect, useState } from 'react';
+import { Transition } from '@headlessui/react';
+import EthBadge from './EthBadge';
+import TokenBalance from './TokenBalance';
+// import { ethers } from 'ethers';
+// import Transak from '@biconomy/transak';
+
+function SideMenu({ isOpen, setIsOpen, smartAccount, logout, userInfo, address}) {
+  const [value, setValue] = useState(0)
+  const [balances, setBalances] = useState(null);
+//   const transak = new Transak('PRODUCTION', {
+//     walletAddress: address,
+//     userData: {
+//       firstName: userInfo?.name || '',
+//       email: userInfo?.email || '',
+//     },
+//   });
+  const handleLogout = () => {
+    setIsOpen(false)
+    logout()
+  }
+  const getBalances = async () => {
+    // const balanceParams =
+    //   {
+    //     chainId: ChainId.POLYGON_MUMBAI, // chainId of your choice
+    //     eoaAddress: address,
+    //     tokenAddresses: [], 
+    //   };
+
+    //   console.log(smartAccount.getAllTokenBalances)
+    //   const balFromSdk = await smartAccount?.getAllTokenBalances(balanceParams);
+    //   const usdBalFromSdk = await smartAccount?.getTotalBalanceInUsd(balanceParams);
+      
+    //   console.info("getAlltokenBalances", balFromSdk.data);
+    //   console.info("getTotalBalanceInUsd", usdBalFromSdk);
+    //   setValue(usdBalFromSdk.data.totalBalance)
+    //   setBalances(balFromSdk.data)
+  }
+
+  useEffect(() => {
+    getBalances()
+  },[])
+  return (
+    <div>
+
+      <Transition show={isOpen} as={React.Fragment}>
+        <div
+          className="fixed inset-0 overflow-hidden z-50"
+          aria-labelledby="slide-over-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="absolute inset-0 overflow-hidden">
+            <div
+              className="absolute inset-0 bg-opacity-75 transition-opacity"
+              onClick={() => setIsOpen(false)}
+            ></div>
+
+            <section
+              className="absolute inset-y-0 right-0 pl-10 max-w-full flex"
+              aria-labelledby="slide-over-heading"
+            >
+              <div className="relative w-screen max-w-md">
+                <Transition.Child
+                  enter="transform transition ease-in-out duration-500 sm:duration-700"
+                  enterFrom="translate-x-full"
+                  enterTo="translate-x-0"
+                  leave="transform transition ease-in-out duration-500 sm:duration-700"
+                  leaveFrom="translate-x-0"
+                  leaveTo="translate-x-full"
+                >
+                  <div className="h-screen divide-y divide-gray-200 bg-black text-white shadow-xl">
+                    <div className="px-4 sm:px-6">
+                      <div className="flex items-start justify-between">
+                        <h2
+                          id="slide-over-heading"
+                          className="text-lg font-medium text-white"
+                        >
+                          Smart Account
+                        </h2>
+                        <div className="ml-3 h-7 flex items-center">
+                          <button
+                            className="bg-black rounded-md text-white hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <span className="sr-only">Close panel</span>
+                            {/* Replace with your icon */}
+                           
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className='m-2' >
+                    <EthBadge address={address} />
+                    <div className="text-white text-2xl m-4">
+                      ${value.toFixed(2)}
+                    </div>
+                    <button  className="bg-blue-500 mb-3 text-white py-2 px-4 rounded-full w-full">
+                    Buy Crypto
+                    </button>
+                    <button onClick={() => handleLogout()} className="bg-blue-500 text-white py-2 px-4 rounded-full w-full">
+                    Logout
+                    </button>
+                    {balances && balances.map((tok, i) => {
+                    if (tok.contract_ticker_symbol == "USDC") {
+                    return (
+                    <TokenBalance key={i} name={"HH"} value={parseInt(100000000000) / 10**6} />
+                    )
+                    }
+                    return (
+                    <TokenBalance key={i} name={"HH"} value={1} />
+                    )
+                    })}
+                    </div>
+                  </div>
+                </Transition.Child>
+              </div>
+            </section>
+          </div>
+        </div>
+      </Transition>
+    </div>
+  );
+}
+
+export default SideMenu;
