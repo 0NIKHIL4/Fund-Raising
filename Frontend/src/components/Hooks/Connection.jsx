@@ -30,6 +30,7 @@ const AlchmeyContext = React.createContext({
   provider: undefined,
   handleLogin:undefined,
   userInfo:undefined,
+  loading:undefined,
 
 })
 
@@ -56,6 +57,7 @@ export const BiconomyProvider = ({ children }) => {
 
 
   const handleLogin= async () => {
+    setLoading(true)
     alert("Heyy")
     const particleSigner = await createParticleSigner();
     setUserInfo(await particleSigner.getAuthDetails());
@@ -71,6 +73,7 @@ export const BiconomyProvider = ({ children }) => {
     }
     console.log(await provider.account.owner.getAddress());
     console.log(await provider.getAddress())
+    setLoading(false)
   }
 
 
@@ -118,6 +121,7 @@ export const BiconomyProvider = ({ children }) => {
         provider: providerState,
         userInfo:userInfo,
         handleLogin,
+        loading,
       }}
     >
       {children}

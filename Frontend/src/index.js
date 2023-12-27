@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { BiconomyProvider } from "./components/Hooks/Connection";
 import { UseAlchemy } from "./components/Hooks/Connection";
+import { Transition } from '@headlessui/react';
 ReactDOM.render(
     <React.StrictMode>
   
@@ -22,6 +23,7 @@ ReactDOM.render(
       </BrowserRouter>
       
       <ToastContainer/>
+      <Transition show={true}/>
     </React.StrictMode>,
     document.getElementById('root')
   );

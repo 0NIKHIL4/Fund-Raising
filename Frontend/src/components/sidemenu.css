@@ -1,0 +1,47 @@
+
+  /* nav.css */
+
+/* Fixed top bar */
+.maincomp {
+ display: flex;
+    justify-content: center;
+  top: 0;
+  right: 0;
+
+  height: 100%;
+  z-index: 10;
+  
+}
+
+/* Connect button */
+.connect-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+/* Account button */
+.account-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+/* Profile image container */
+.profile-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Profile image */
+.img-profile {
+  border-radius: 50%;
+  margin-left: 1rem;
+}

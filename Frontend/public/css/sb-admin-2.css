@@ -10,9 +10,9 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
- @tailwind base;
-@tailwind components;
-@tailwind utilities;
+ @import 'tailwindcss/base';
+ @import 'tailwindcss/components';
+ @import 'tailwindcss/utilities';
 :root {
   --blue: #4e73df;
   --indigo: #6610f2;
@@ -2177,6 +2177,8 @@ textarea.form-control {
   background-color: rgba(231, 74, 59, 0.9);
   border-radius: 0.35rem;
 }
+
+
 
 .form-row > .col > .invalid-tooltip,
 .form-row > [class*="col-"] > .invalid-tooltip {
