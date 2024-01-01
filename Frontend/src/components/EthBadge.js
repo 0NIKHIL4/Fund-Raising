@@ -24,7 +24,7 @@ function EthBadge({ address }) {
         <circle cx="16" cy="16" r="8" fill="#F44336"/>
       </svg>
       {truncateAddress(address)}
-      {isCopied && <span className="ml-2 text-green-200">Copied!</span>}
+      {isCopied && <span className="ml-2 text-white">Copied!</span>}
     </button>
   );
 }

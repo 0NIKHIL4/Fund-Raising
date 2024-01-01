@@ -78,17 +78,11 @@ function Base() {
   console.log("smartAccountAddress",accountAddress)
   console.log("Account",ownerAddress)
   // console.log("userInfo",userInfo.name);
-
-  // ff(provider,ownerAddress);
-
-  
-
   
   const navigate = useNavigate();
   function Logout(){
     web3.eth.accounts.wallet.clear();
     localStorage.clear();
-    navigate('/login');
   
   }
 
@@ -115,18 +109,12 @@ function Base() {
     // alert(isAuthenticated)
 
 
-  if (isAuthenticated != null) {
-
-    
-
-    // Redirect to login page if not authenticated
-    return <Login/>;
-  } else{
+  
 
   return (
-    <div id="page-top">
+    <div  id="page-top">
   {/* Page Wrapper */}
-  <div id="wrapper">
+  <div  id="wrapper">
     {/* Sidebar */}
     <ul
       className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
@@ -418,7 +406,7 @@ function Base() {
 </div>
 
   )
-  }
+  
 };
 
 export default Base;

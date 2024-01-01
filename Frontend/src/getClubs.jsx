@@ -3,7 +3,7 @@ import { marketplaceAddress } from './config';
 import {Web3} from 'web3';
 import $ from 'jquery'; 
 import ABI from "./SmartContract/artifacts/contracts/InvestmentClub.sol/InvestmentClub.json"
-
+import { Link } from 'react-router-dom';
 const web3 = new Web3(new Web3.providers.HttpProvider("https://polygon-mumbai.infura.io/v3/95688893704a4d5bac083296c3547383"));
 
 
@@ -14,7 +14,7 @@ var contractPublic = null;
 async function getContract(userAddress) {
   contractPublic = await new web3.eth.Contract(ABI.abi,marketplaceAddress);
   console.log(contractPublic)
-  if(userAddress != null && userAddress != undefined) {
+  if(userAddress !== null && userAddress !== undefined) {
     contractPublic.defaultAccount = userAddress;
   }
 }
@@ -29,7 +29,7 @@ async function GetClubs() {
   var walletAddress = localStorage.getItem("filWalletAddress");
 
   await getContract(walletAddress);
-  if(contractPublic != undefined) {
+  if(contractPublic !== undefined) {
     var clubs = await contractPublic.methods.listClubs().call()
 
     console.log(clubs.length)
@@ -69,9 +69,11 @@ async function GetClubs() {
     clubLink.className = 'btn btn-success';
     clubLink.textContent = valor.clubId;
     clubLink.addEventListener('click', function() {
+      localStorage.setItem("clubId", valor.clubId);
+      // return <Link to="/club">{/* Render your Link content here */}</Link>;
       changeClub(valor.clubId);
     });
-        contractTd.innerHTML = "<a class='btn btn-success' onclick='changeClub(" + valor.clubId + ")'>"+valor.clubId+"</a>";
+        contractTd.innerHTML = "<a class='btn btn-success' href='/club' >"+valor.clubId+"</a>";
         tbodyTr.appendChild(clubLink);
         var contractTickerTd = document.createElement('td');
         contractTickerTd.innerHTML = '<b>' + valor.name + '</b>';

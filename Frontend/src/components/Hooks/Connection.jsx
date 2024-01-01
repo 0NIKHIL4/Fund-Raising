@@ -31,6 +31,7 @@ const AlchmeyContext = React.createContext({
   handleLogin:undefined,
   userInfo:undefined,
   loading:undefined,
+  Logout:undefined,
 
 })
 
@@ -58,12 +59,13 @@ export const BiconomyProvider = ({ children }) => {
 
   const handleLogin= async () => {
     setLoading(true)
-    alert("Heyy")
     const particleSigner = await createParticleSigner();
     setUserInfo(await particleSigner.getAuthDetails());
 
     const provider = await initializeProvider(particleSigner);
     setProviderState(provider);
+
+    console.log(provider)
 
     if (provider?.account?.owner) {
       const owner = await provider.account.owner.getAddress();
@@ -73,6 +75,7 @@ export const BiconomyProvider = ({ children }) => {
     }
     console.log(await provider.account.owner.getAddress());
     console.log(await provider.getAddress())
+    
     setLoading(false)
   }
 
@@ -97,10 +100,14 @@ export const BiconomyProvider = ({ children }) => {
     return particleSigner;
   };
 
+async function Logout(){
+  setAccountAddress(null);
+  setOwnerAddress(null);
+}
 
   const initializeProvider = async (particleSigner) => {
     return new AlchemyProvider({
-      apiKey: "D5xSFqtTLJe_xdCJ24O4A8S6z2tafhCv",
+      apiKey: "6efwtYfRltPbAdgTp0QiLYddDimdOLbd",
       chain: polygonMumbai,
       entryPointAddress,
     }).connect(rpcClient => new LightSmartContractAccount({
@@ -122,6 +129,7 @@ export const BiconomyProvider = ({ children }) => {
         userInfo:userInfo,
         handleLogin,
         loading,
+        Logout,
       }}
     >
       {children}

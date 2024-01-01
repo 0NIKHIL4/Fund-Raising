@@ -55,7 +55,7 @@ var clubId = localStorage.getItem("clubId");
       $('#votes_against').text(clubs.votesAgainst);
       $('#CID').text(clubs.Cid);
       
-      if(clubs.status == 'Pending' && clubs.creator == aeWalletAddress) {
+      if(clubs.status == 'Pending' && clubs.creator == filWalletAddress) {
         $('.creator_options').css('display','block');
       }
       if(clubs.status != 'Pending') {

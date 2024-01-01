@@ -5,14 +5,17 @@ import lighthouse from '@lighthouse-web3/sdk'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Tg from '../components/toggle';
+import {ethers} from 'ethers';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { marketplaceAddress } from "../config";
 import {Web3} from 'web3';
 import $ from 'jquery'; 
+import { UseAlchemy } from '../components/Hooks/Connection';
+
 import ABI from "../SmartContract/artifacts/contracts/InvestmentClub.sol/InvestmentClub.json"
-const ethers = require("ethers")
+// const ethers = require("ethers")
 const web3 = new Web3(new Web3.providers.HttpProvider("https://polygon-mumbai.infura.io/v3/95688893704a4d5bac083296c3547383"));
 
 
@@ -24,7 +27,7 @@ function CreateClub() {
 
   
   
- 
+  const {ownerAddress,accountAddress,provider, handleLogin,userInfo,loading} = UseAlchemy();
   const [clubName, setClubName] = useState('');
   const [password, setPassword] = useState('');
 
@@ -130,25 +133,59 @@ function CreateClub() {
         
         $('.loading_message_creating').css("display","block");
         console.log("The contractPublic is ",contractPublic)
-        const query = contractPublic.methods.createClub(clubName,cid1);
+        // const query = contractPublic.methods.createClub(clubName,cid1);
  
-        const encodedABI = query.encodeABI();
+        // const encodedABI = query.encodeABI();
         // alert(this.contractPublic.options.address)
        
-        const signedTx = await web3.eth.accounts.signTransaction(
-        {
-          
-          from: my_wallet[0].address,
-          gasPrice: "20000000000",
-          gas: "2000000",
-          to: contractPublic.options.address,
-          data: encodedABI,
-        },
-        my_wallet[0]["privateKey"],
-        false,
-      );
-      
-        var clubId = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        try{
+          const abi = ABI.abi;
+            const iface = new ethers.utils.Interface(abi);
+            const encodedData = iface.encodeFunctionData("createClub", [clubName,cid1]);
+            const GAS_MANAGER_POLICY_ID = "479c3127-fb07-4cc6-abce-d73a447d2c01";
+        
+            provider.withAlchemyGasManager({
+              policyId: GAS_MANAGER_POLICY_ID, // replace with your policy id, get yours at https://dashboard.alchemy.com/
+              entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+            });
+        
+        const result = await provider.sendUserOperation({
+                target: marketplaceAddress, // Replace with the desired target address
+                data: encodedData, // Replace with the desired call data
+              });
+        
+              const txHash = await provider.waitForUserOperationTransaction(
+                result.hash
+              );
+            
+              console.log("\nTransaction hash: ", txHash);
+            
+              const userOpReceipt = await provider.getUserOperationReceipt(
+                result.hash
+              );
+            
+              console.log("\nUser operation receipt: ", userOpReceipt);
+            
+              const txReceipt = await provider.rpcClient.waitForTransactionReceipt({
+                hash: txHash,
+              });
+            
+              console.log(txReceipt);
+              // console.log("txHash", receipt.transactionHash);
+              const polygonScanlink = `https://mumbai.polygonscan.com/tx/${txHash}`
+              toast.success(<a target="_blank" href={polygonScanlink}>Success Click to view transaction</a>, {
+                position: "top-right",
+                autoClose: 18000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
+          }catch(error){
+            console.log(error)
+          }
    
         $('#club_name').val('');
         $('#errorCreateClub').css("display","none");

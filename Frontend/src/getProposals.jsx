@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { marketplaceAddress } from './config';
 import {Web3} from 'web3';
 import $ from 'jquery'; 
+
 import ABI from "./SmartContract/artifacts/contracts/InvestmentClub.sol/InvestmentClub.json"
 
 
@@ -17,19 +18,26 @@ async function getContract(userAddress) {
     }
   }
 
-window.changeProposal=(proposalId)=> {
-    localStorage.setItem("proposalId",proposalId);
-    console.log(localStorage.getItem("proposalId"))
-    window.location.href = "proposal";
-  }
+// window.ChangeProposal=(proposalId)=> {
+//     localStorage.setItem("proposalId",proposalId);
+//     console.log(localStorage.getItem("proposalId"))
+//   //   const history = useHistory();
+//   // history.push("/proposal");
+//   window.location.href = "proposal";
+//   }
+
+
+function ChangeProposal(proposalId){
+  localStorage.setItem("proposalId",proposalId);
+  console.log(localStorage.getItem("proposalId"))
+  window.location.href = "proposal";
+}
 
 
   async function GetProposals() {
-    function changeProposal(proposalId){
-      localStorage.setItem("proposalId",proposalId);
-      console.log(localStorage.getItem("proposalId"))
-      window.location.href = "proposal";
-    }
+
+
+   
     var walletAddress = localStorage.getItem("filWalletAddress");
     await getContract(walletAddress);
     if(contractPublic != undefined) {
@@ -72,10 +80,10 @@ window.changeProposal=(proposalId)=> {
           clubLink.className = 'btn btn-success';
           clubLink.textContent = valor.id;
           clubLink.addEventListener('click', function() {
-            changeProposal(valor.id);
+            ChangeProposal(valor.id);
           });
 
-          contractTd.innerHTML = "<a class='btn btn-success' onclick='changeProposal(" + valor.id + ")'>"+valor.id+"</a>";
+          contractTd.innerHTML = "<div class='btn btn-success' onclick='ChangeProposal(" + valor.id + ")'>"+valor.id+"</div>";
           tbodyTr.appendChild(clubLink);
           var contractTickerTd = document.createElement('td');
           contractTickerTd.innerHTML = '<b>' + valor.description + '</b>';
