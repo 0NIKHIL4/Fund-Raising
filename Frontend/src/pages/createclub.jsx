@@ -376,8 +376,7 @@ function CreateClub() {
                         id="club_name"
                         className="form-control form-control-user"
                         placeholder="Give a Description for this Investment Club"
-                        value={clubName}
-                        onChange={(e) => setClubName(e.target.value)}
+                        
                       />{" "}
                       <br />
                       
