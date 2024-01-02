@@ -370,15 +370,17 @@ function CreateClub() {
                         onChange={(e) => setClubName(e.target.value)}
                       />{" "}
                       <br />
-                      Your password:{" "}
+                      Club Description:{" "}
                       <input
-                        type="password"
-                        id="trx_password"
+                        type="text"
+                        id="club_name"
                         className="form-control form-control-user"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Give a Description for this Investment Club"
+                        value={clubName}
+                        onChange={(e) => setClubName(e.target.value)}
                       />{" "}
                       <br />
+                      
                       <br />
                       <br />
                       <input
