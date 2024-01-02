@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 
 const TokenBalance = ({ name, value }) => {
+  alert("Heyyy");
   const [balance, setBalance] = useState('-')
   useEffect(() => {
     if(value) {

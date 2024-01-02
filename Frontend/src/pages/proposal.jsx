@@ -11,13 +11,12 @@ import {Web3} from 'web3';
 
 import ABI from "../SmartContract/artifacts/contracts/InvestmentClub.sol/InvestmentClub.json"
 
-import DataAbi from "../DataoFilecoin/artifacts/contracts/datadao.sol/DataDAO.json"
 
 import axios from 'axios';
 import getProposalById from '../getProposalById';
 import GetClub from '../getclub';
 import Tg from "../components/toggle";
-
+import { UseAlchemy } from '../components/Hooks/Connection';
 const ethers = require("ethers")
 const DataDaoAddress  = "0x8138489b863a68f224307a5D0Fa630917d848e25"
 const web3 = new Web3(new Web3.providers.HttpProvider("https://polygon-mumbai.infura.io/v3/95688893704a4d5bac083296c3547383"));
@@ -39,145 +38,7 @@ async function getContract(userAddress) {
 
 
 
-async function runProposal(event) {
-  
-  var filWalletAddress = localStorage.getItem("filWalletAddress");
-  await getContract(filWalletAddress);
-  if(contractPublic != undefined) {
-    var option_execution = $('#option_execution').val()
-    var password = $('#passwordShowPVExecution').val();
-    if(option_execution == '') {
-      $('.errorExecution').css("display","block");
-      $('.errorExecution').text("Option is required");
-      return;
-    }
-    if(password == '') {
-      $('.errorExecution').css("display","block");
-      $('.errorExecution').text("Password is invalid");
-      return;
-    }
-    var clubId = localStorage.getItem("clubId");
-    var proposalId = localStorage.getItem("proposalId");
-    try {
-      const my_wallet = await web3.eth.accounts.wallet.load(password);
-    
-    if(my_wallet !== undefined)
-    {
-      
 
-      $('.errorExecution').css("display","none");
-      $('.successExecution').css("display","block");
-      $('.successExecution').text("Running...");
-      var clubId = localStorage.getItem("clubId");
-      var proposalId = localStorage.getItem("proposalId");
-      
-        try {
-          const ans  = await contractPublic.methods.isVotingOn(clubId,proposalId).call();
-
-          if(ans){
-            toast.error("Voting is still ON")
-          }
-          
-          if(option_execution == 'execute') {
-            const query = await contractPublic.methods.executeProposal(clubId,proposalId);
-            const encodedABI = query.encodeABI();
-            
-            
-            const signedTx = await web3.eth.accounts.signTransaction(
-              {
-                from: my_wallet[0].address,
-                gasPrice: "20000000000",
-                    gas: "2000000",
-        to: contractPublic.options.address,
-        data: encodedABI,
-              },
-              my_wallet[0].privateKey,
-              false
-            );
-            var clubId = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-            const polygonScanlink = `https://sepolia.etherscan.io/tx/${clubId.transactionHash}`
-            toast.success(<a target="_blank" href={polygonScanlink}>Transaction Completed, Click to view transaction</a>, {
-              position: "top-right",
-              autoClose: 18000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-              }); 
-            console.log(clubId);
-
-           
-          } else {
-            if(option_execution == 'close') {
-              const query = contractPublic.methods.closeProposal(clubId,proposalId);
-              const encodedABI = query.encodeABI();
-              const ans  = await contractPublic.methods.isVotingOn(clubId,proposalId).call();
-
-            if(ans){
-              toast.error("Voting is still ON")
-            }
-              
-              const signedTx = await web3.eth.accounts.signTransaction(
-                {
-                  from: my_wallet[0].address,
-                  gasPrice: "20000000000",
-                    gas: "2000000",
-        to: contractPublic.options.address,
-        data: encodedABI,
-                },
-                my_wallet[0].privateKey,
-                false
-              );
-              var clubId = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-              const polygonScanlink = `https://sepolia.etherscan.io/tx/${clubId.transactionHash}`
-              toast.success(<a target="_blank" href={polygonScanlink}>Transaction Completed, Click to view transaction</a>, {
-                position: "top-right",
-                autoClose: 18000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                });
-            }
-          }
-          
-        } catch (error) {
-          // alert(error)
-          toast.error(error)
-          console.log(error)
-          $('.successExecution').css("display","none");
-          $('.errorExecution').css("display","block");
-          $('.errorExecution').text("Error executing/closing the proposal");
-          return;
-        }
-        
-        $('#option_execution').val('');
-        $('#passwordShowPVExecution').val('');
-        $('.errorExecution').css("display","none");
-        $('.successExecution').css("display","block");
-        $('.successExecution').text("The execution was successful ");
-      } else {
-        // alert(error)
-        toast.error(error)
-        $('.valid-feedback').css('display','none');
-          $('.invalid-feedback').css('display','block');
-          $('.invalid-feedback').text('The password is invalid');
-      }
-    }
-    catch {
-    
-      $('.valid-feedback').css('display','none');
-          $('.invalid-feedback').css('display','block');
-          $('.invalid-feedback').text('The password is invalid');
-    }
-    
-    
-  }
-}
 
 async function verify(){
   const clubId =  localStorage.getItem("clubId");
@@ -200,95 +61,7 @@ async function verify(){
         
 
 }
-async function voteOnProposal() {
 
-
-
-
-  var filWalletAddress = localStorage.getItem("filWalletAddress");
-  await getContract(filWalletAddress);
-  
-
-  var clubId = localStorage.getItem("clubId");
-  var proposalId = localStorage.getItem("proposalId");
- 
-
-  if(contractPublic != undefined) {
-    var option_vote = $('#option_vote').val()
-    var password = $('#passwordShowPVVote').val();
-    if(option_vote == '') {
-      $('#errorCreateProposal').css("display","block");
-      $('#errorCreateProposal').text("Vote is required");
-      return;
-    }
-    if(password == '') {
-      $('#errorCreateProposal').css("display","block");
-      $('#errorCreateProposal').text("Password is invalid");
-      return;
-    }
-   
-    const my_wallet = await web3.eth.accounts.wallet.load(password);
-    if(my_wallet !== undefined)
-    {
-      $('.successVote').css("display","block");
-      $('.successVote').text("Voting...");
-      var optionBool = option_vote == '1' ? true : false;
-      try {
-        const ans  = await contractPublic.methods.isVotingOn(clubId,proposalId).call();
-
-        console.log("ans",ans)
-       
-        if(!ans){
-          toast.error("Voting time periods is over!");
-          return;
-        }
-        
-        const query = contractPublic.methods.voteOnProposal(clubId,proposalId, optionBool);
-        const encodedABI = query.encodeABI();
-
-
-        
-
-        const nonce = await web3.eth.getTransactionCount(my_wallet[0].address);
-        
-        const signedTx = await web3.eth.accounts.signTransaction(
-          {
-            from: my_wallet[0].address,
-            gasPrice: "20000000000",
-            gas: "2000000",
-        to: contractPublic.options.address,
-        data: encodedABI,
-            //value: amountAE
-          },
-          my_wallet[0].privateKey,
-          false
-        );
-        var clubId = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-       
-      } catch (error) {
-        console.log(error.message);
-        
-      
-        $('.successVote').css("display","none");
-        $('.errorVote').css("display","block");
-        $('.errorVote').text("You already voted on this proposal");
-        return;
-      }
-      
-      $('#option_vote').val('');
-      $('#passwordShowPVVote').val('');
-      $('#errorVote').css("display","none");
-      $('#successVote').css("display","block");
-      $('#successVote').text("Your vote was successful ");
-      window.location.reload();
-    } else {
-      $('.valid-feedback').css('display','none');
-        $('.invalid-feedback').css('display','block');
-        $('.invalid-feedback').text('The password is invalid');
-    }
-    
-  }
-}
 
 
 async function verifyUserInClub() {
@@ -310,6 +83,338 @@ async function verifyUserInClub() {
 }
 
 function Proposal() {
+
+  const {ownerAddress,accountAddress,provider, handleLogin,userInfo,loading} = UseAlchemy();
+
+  async function runProposal(event) {
+  
+    var filWalletAddress = localStorage.getItem("filWalletAddress");
+    await getContract(filWalletAddress);
+    if(contractPublic != undefined) {
+      var option_execution = $('#option_execution').val()
+      var password = $('#passwordShowPVExecution').val();
+      if(option_execution == '') {
+        $('.errorExecution').css("display","block");
+        $('.errorExecution').text("Option is required");
+        return;
+      }
+      if(password == '') {
+        $('.errorExecution').css("display","block");
+        $('.errorExecution').text("Password is invalid");
+        return;
+      }
+      var clubId = localStorage.getItem("clubId");
+      var proposalId = localStorage.getItem("proposalId");
+      try {
+        const my_wallet = "123";
+      
+      if(my_wallet !== undefined)
+      {
+        
+  
+        $('.errorExecution').css("display","none");
+        $('.successExecution').css("display","block");
+        $('.successExecution').text("Running...");
+        var clubId = localStorage.getItem("clubId");
+        var proposalId = localStorage.getItem("proposalId");
+        
+          try {
+            var clubs = await contractPublic.methods.getProposalById(clubId, proposalId).call();
+            const amnt = web3.utils.toWei(clubs.amount.toString(), 'ether');
+            console.log(amnt)
+            // amountAE  = web3.utils.toWei(amountAE.toString(), 'ether');
+            const ans  = await contractPublic.methods.isVotingOn(clubId,proposalId).call();
+            // const ans1 = await contractPublic.methods.policyOK(clubId,proposalId).call();
+
+            // console.log(ans1);
+  
+            if(ans){
+              toast.error("Voting is still ON")
+              $('.successExecution').css("display","none");
+              $('.errorExecution').css("display","block");
+              $('.errorExecution').text("Voting is still ON");
+              return;
+              
+            }
+            
+            if(option_execution == 'execute') {
+              const query = await contractPublic.methods.executeProposal(clubId,proposalId);
+              const encodedABI = query.encodeABI();
+  
+              try{
+                const abi = ABI.abi;
+                  const iface = new ethers.utils.Interface(abi);
+                  const encodedData = iface.encodeFunctionData("executeProposal", [clubId,proposalId]);
+                  const GAS_MANAGER_POLICY_ID = "479c3127-fb07-4cc6-abce-d73a447d2c01";
+              
+                  provider.withAlchemyGasManager({
+                    policyId: GAS_MANAGER_POLICY_ID, // replace with your policy id, get yours at https://dashboard.alchemy.com/
+                    entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+                  });
+              
+              const result = await provider.sendUserOperation({
+                      target: marketplaceAddress, // Replace with the desired target address
+                      data: encodedData, // Replace with the desired call data
+                     
+
+                    });
+              
+                    const txHash = await provider.waitForUserOperationTransaction(
+                      result.hash
+                    );
+                  
+                    console.log("\nTransaction hash: ", txHash);
+                  
+                    const userOpReceipt = await provider.getUserOperationReceipt(
+                      result.hash
+                    );
+                  
+                    console.log("\nUser operation receipt: ", userOpReceipt);
+                  
+                    const txReceipt = await provider.rpcClient.waitForTransactionReceipt({
+                      hash: txHash,
+                    });
+                  
+                    console.log(txReceipt);
+                    // console.log("txHash", receipt.transactionHash);
+                    const polygonScanlink = `https://mumbai.polygonscan.com/tx/${txHash}`
+                    toast.success(<a target="_blank" href={polygonScanlink}>Success Click to view transaction</a>, {
+                      position: "top-right",
+                      autoClose: 18000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "dark",
+                      });
+                }catch(error){
+                  console.log(error)
+                }
+  
+  
+             
+            } else {
+              if(option_execution == 'close') {
+                // const query = contractPublic.methods.closeProposal(clubId,proposalId);
+                // const encodedABI = query.encodeABI();
+                const ans  = await contractPublic.methods.isVotingOn(clubId,proposalId).call();
+  
+              if(ans){
+                toast.error("Voting is still ON")
+                $('.successExecution').css("display","none");
+            $('.errorExecution').css("display","block");
+            $('.errorExecution').text("Voting is still ON");
+            return;
+
+              }
+              
+                
+              try{
+               
+                
+                const abi = ABI.abi;
+                  const iface = new ethers.utils.Interface(abi);
+                  const encodedData = iface.encodeFunctionData("closeProposal", [clubId,proposalId]);
+                  const GAS_MANAGER_POLICY_ID = "479c3127-fb07-4cc6-abce-d73a447d2c01";
+              
+                  provider.withAlchemyGasManager({
+                    policyId: GAS_MANAGER_POLICY_ID, // replace with your policy id, get yours at https://dashboard.alchemy.com/
+                    entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+                  });
+              
+              const result = await provider.sendUserOperation({
+                      target: marketplaceAddress, // Replace with the desired target address
+                      data: encodedData, // Replace with the desired call data
+
+                    });
+              
+                    const txHash = await provider.waitForUserOperationTransaction(
+                      result.hash
+                    );
+                  
+                    console.log("\nTransaction hash: ", txHash);
+                  
+                    const userOpReceipt = await provider.getUserOperationReceipt(
+                      result.hash
+                    );
+                  
+                    console.log("\nUser operation receipt: ", userOpReceipt);
+                  
+                    const txReceipt = await provider.rpcClient.waitForTransactionReceipt({
+                      hash: txHash,
+                    });
+                  
+                    console.log(txReceipt);
+                    // console.log("txHash", receipt.transactionHash);
+                    const polygonScanlink = `https://mumbai.polygonscan.com/tx/${txHash}`
+                    toast.success(<a target="_blank" href={polygonScanlink}>Success Click to view transaction</a>, {
+                      position: "top-right",
+                      autoClose: 18000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "dark",
+                      });
+                }catch(error){
+                  console.log(error)
+                }
+              }
+            }
+            
+          } catch (error) {
+            // alert(error)
+            toast.error(error)
+            console.log(error)
+            $('.successExecution').css("display","none");
+            $('.errorExecution').css("display","block");
+            $('.errorExecution').text("Error executing/closing the proposal");
+            return;
+          }
+          
+          $('#option_execution').val('');
+          $('#passwordShowPVExecution').val('');
+          $('.errorExecution').css("display","none");
+          $('.successExecution').css("display","block");
+          $('.successExecution').text("The execution was successful ");
+        } else {
+          // alert(error)
+          toast.error(error)
+          $('.valid-feedback').css('display','none');
+            $('.invalid-feedback').css('display','block');
+            $('.invalid-feedback').text('The password is invalid');
+        }
+      }
+      catch {
+      
+        $('.valid-feedback').css('display','none');
+            $('.invalid-feedback').css('display','block');
+            $('.invalid-feedback').text('The password is invalid');
+      }
+      
+      
+    }
+  }
+
+
+
+
+  async function voteOnProposal() {
+    var filWalletAddress = localStorage.getItem("filWalletAddress");
+    await getContract(filWalletAddress);
+    
+  
+    var clubId = localStorage.getItem("clubId");
+    var proposalId = localStorage.getItem("proposalId");
+   
+  
+    if(contractPublic != undefined) {
+      var option_vote = $('#option_vote').val()
+     
+      if(option_vote == '') {
+        $('#errorCreateProposal').css("display","block");
+        $('#errorCreateProposal').text("Vote is required");
+        return;
+      }
+     
+     
+      const my_wallet = '123'
+      if(my_wallet !== undefined)
+      {
+        $('.successVote').css("display","block");
+        $('.successVote').text("Voting...");
+        var optionBool = option_vote == '1' ? true : false;
+        try {
+          const ans  = await contractPublic.methods.isVotingOn(clubId,proposalId).call();
+  
+          console.log("ans",ans)
+         
+          if(!ans){
+            toast.error("Voting time periods is over!");
+            $('.successVote').css("display","none");
+          $('.errorVote').css("display","block");
+          $('.errorVote').text("Voting time periods is over!");
+            return;
+          }
+
+          const chk  =  localStorage.getItem(accountAddress);
+
+               if(chk=="YES"){
+                toast.error("You already voted on this proposal");
+                $('.successVote').css("display","none");
+          $('.errorVote').css("display","block");
+          $('.errorVote').text("You already voted on this proposal");
+                return;
+               }
+          
+          const query = contractPublic.methods.voteOnProposal(clubId,proposalId, optionBool);
+          const encodedABI = query.encodeABI();
+       
+            const abi = ABI.abi;
+              const iface = new ethers.utils.Interface(abi);
+              const encodedData = iface.encodeFunctionData("voteOnProposal", [clubId,proposalId, optionBool]);
+              const GAS_MANAGER_POLICY_ID = "479c3127-fb07-4cc6-abce-d73a447d2c01";
+          
+              provider.withAlchemyGasManager({
+                policyId: GAS_MANAGER_POLICY_ID, // replace with your policy id, get yours at https://dashboard.alchemy.com/
+                entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+              });
+          
+          const result = await provider.sendUserOperation({
+                  target: marketplaceAddress, // Replace with the desired target address
+                  data: encodedData, // Replace with the desired call data
+                });
+          
+                const txHash = await provider.waitForUserOperationTransaction(
+                  result.hash
+                );
+              
+                console.log("\nTransaction hash: ", txHash);
+              
+                const userOpReceipt = await provider.getUserOperationReceipt(
+                  result.hash
+                );
+              
+                console.log("\nUser operation receipt: ", userOpReceipt);
+              
+                const txReceipt = await provider.rpcClient.waitForTransactionReceipt({
+                  hash: txHash,
+                });
+              
+                console.log(txReceipt);
+                // console.log("txHash", receipt.transactionHash);
+                
+            
+         
+        } catch (error) {
+          console.log(error.message);
+          
+        
+          $('.successVote').css("display","none");
+          $('.errorVote').css("display","block");
+          $('.errorVote').text("You already voted on this proposal");
+          toast.error("You already voted on this proposal");
+          
+          return;
+        }
+        
+        $('#option_vote').val('');
+        $('#passwordShowPVVote').val('');
+        $('#errorVote').css("display","none");
+        $('#successVote').css("display","block");
+        $('#successVote').text("Your vote was successful ");
+        localStorage.setItem(accountAddress,"YES");
+        window.location.reload();
+      } else {
+        $('.valid-feedback').css('display','none');
+          $('.invalid-feedback').css('display','block');
+          $('.invalid-feedback').text('The password is invalid');
+      }
+      
+    }
+  }
 
   const navigate = useNavigate();
   function Logout(){
@@ -346,7 +451,7 @@ function Proposal() {
         <div className="sidebar-brand-icon rotate-n-15">
           <i className="fas fa-laugh-wink" />
         </div>
-        <div className="sidebar-brand-text mx-3">Treasure Dao</div>
+        <div className="sidebar-brand-text mx-3">Alchemy Club</div>
       </a>
       {/* Divider */}
       <hr className="sidebar-divider my-0" />
@@ -358,7 +463,7 @@ function Proposal() {
         </a>
       </li>
       <li className="nav-item">
-        <Link  className=" nav-link" to="joinclub">
+        <Link  className=" nav-link" to="/joinclub">
           <i className="fas fa-fw fa-file-image-o" />
           <span>Available clubs</span>
           </Link>
@@ -383,89 +488,7 @@ function Proposal() {
       {/* Main Content */}
       <div id="content">
         {/* Topbar */}
-        <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-          {/* Sidebar Toggle (Topbar) */}
-          <button
-            id="sidebarToggleTop"
-            className="btn btn-link d-md-none rounded-circle mr-3"
-            onClick={Tg}
-          >
-            <i className="fa fa-bars" />
-          </button>
-          {/* Topbar Navbar */}
-          <ul className="navbar-nav ml-auto">
-            {/* Nav Item - Search Dropdown (Visible Only XS) */}
-            <li className="nav-item dropdown no-arrow d-sm-none">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="searchDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <i className="fas fa-search fa-fw" />
-              </a>
-              {/* Dropdown - Messages */}
-              <div
-                className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                aria-labelledby="searchDropdown"
-              >
-                <form className="form-inline mr-auto w-100 navbar-search">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control bg-light border-0 small"
-                      placeholder="Search for..."
-                      aria-label="Search"
-                      aria-describedby="basic-addon2"
-                    />
-                    <div className="input-group-append">
-                      <button className="btn btn-primary" type="button">
-                        <i className="fas fa-search fa-sm" />
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li>
-            <div className="topbar-divider d-none d-sm-block" />
-            {/* Nav Item - User Information */}
-            <li className="nav-item dropdown no-arrow">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="userDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <img
-                  className="img-profile rounded-circle"
-                  src="img/undraw_profile.svg"
-                />
-              </a>
-              {/* Dropdown - User Information */}
-              <div
-                className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="userDropdown"
-              >
-                <div className="dropdown-divider" />
-                <a
-                  className="dropdown-item"
-                  href="#"
-                  data-toggle="modal"
-                  data-target="#logoutModal"
-                >
-                  <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" />
-                  Logout and clear data from browser
-                </a>
-              </div>
-            </li>
-          </ul>
-        </nav>
+      
         {/* End of Topbar */}
         {/* Begin Page Content */}
         <div className="container-fluid">
@@ -484,7 +507,7 @@ function Proposal() {
                   <div className="row no-gutters align-items-center">
                     <div className="col mr-2">
                       <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Club Balance (sepolia)
+                        Club Balance (MATIC)
                       </div>
                       <div className="h5 mb-0 font-weight-bold text-gray-800 club_balance">
                         -
@@ -595,7 +618,7 @@ function Proposal() {
                         <span id="proposal_destination" />
                       </b>{" "}
                       <br />
-                      Amount (in sepolia):{" "}
+                      Amount (in Matic):{" "}
                       <b>
                         <span id="proposal_amount" />
                       </b>{" "}
@@ -655,13 +678,7 @@ function Proposal() {
                       <option value={0}>No</option>
                     </select>{" "}
                     <br />
-                    Enter your password: <br />
-                    <input
-                      type="password"
-                      id="passwordShowPVVote"
-                      className="form-control"
-                    />{" "}
-                    <br />
+                   
                     <div 
                      onClick={() => {
                         voteOnProposal();
@@ -696,13 +713,7 @@ function Proposal() {
                       <option value="close">Close proposal</option>
                     </select>{" "}
                     <br />
-                    Enter your password: <br />
-                    <input
-                      type="password"
-                      id="passwordShowPVExecution"
-                      className="form-control"
-                    />{" "}
-                    <br />
+                   
                     <div href="" id="btnExecution" onClick={() => {
                         runProposal();
                       }} className="btn btn-success">

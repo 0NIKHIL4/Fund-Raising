@@ -257,7 +257,7 @@ function CreateProposal() {
         <div className="sidebar-brand-icon rotate-n-15">
           <i className="fas fa-laugh-wink" />
         </div>
-        <div className="sidebar-brand-text mx-3">Treasure Dao</div>
+        <div className="sidebar-brand-text mx-3">Alchemy Club</div>
       </a>
       {/* Divider */}
       <hr className="sidebar-divider my-0" />
@@ -293,89 +293,7 @@ function CreateProposal() {
       {/* Main Content */}
       <div id="content">
         {/* Topbar */}
-        <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-          {/* Sidebar Toggle (Topbar) */}
-          <button
-            id="sidebarToggleTop"
-            className="btn btn-link d-md-none rounded-circle mr-3"
-            onClick={Tg}
-          >
-            <i className="fa fa-bars" />
-          </button>
-          {/* Topbar Navbar */}
-          <ul className="navbar-nav ml-auto">
-            {/* Nav Item - Search Dropdown (Visible Only XS) */}
-            <li className="nav-item dropdown no-arrow d-sm-none">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="searchDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <i className="fas fa-search fa-fw" />
-              </a>
-              {/* Dropdown - Messages */}
-              <div
-                className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                aria-labelledby="searchDropdown"
-              >
-                <form className="form-inline mr-auto w-100 navbar-search">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control bg-light border-0 small"
-                      placeholder="Search for..."
-                      aria-label="Search"
-                      aria-describedby="basic-addon2"
-                    />
-                    <div className="input-group-append">
-                      <button className="btn btn-primary" type="button">
-                        <i className="fas fa-search fa-sm" />
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li>
-            <div className="topbar-divider d-none d-sm-block" />
-            {/* Nav Item - User Information */}
-            <li className="nav-item dropdown no-arrow">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="userDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <img
-                  className="img-profile rounded-circle"
-                  src="img/undraw_profile.svg"
-                />
-              </a>
-              {/* Dropdown - User Information */}
-              <div
-                className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="userDropdown"
-              >
-                <div className="dropdown-divider" />
-                <a
-                  className="dropdown-item"
-                  href="#"
-                  data-toggle="modal"
-                  data-target="#logoutModal"
-                >
-                  <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" />
-                  Logout and clear data from browser
-                </a>
-              </div>
-            </li>
-          </ul>
-        </nav>
+        
         {/* End of Topbar */}
         {/* Begin Page Content */}
         <div className="container-fluid">
@@ -392,7 +310,7 @@ function CreateProposal() {
                   <div className="row no-gutters align-items-center">
                     <div className="col mr-2">
                       <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Club Balance (sepolia)
+                        Club Balance (Matic)
                       </div>
                       <div className="h5 mb-0 font-weight-bold text-gray-800 club_balance">
                         -
@@ -487,10 +405,10 @@ function CreateProposal() {
                         className="form-control form-control-user"
                         value={destination}
 onChange={(e) => setDestination(e.target.value)}
-                        placeholder="Enter the sepolia destination address: 0x....."
+                        placeholder="Enter the Matic destination address: 0x....."
                       />{" "}
                       <br />
-                      Amount (in sepolia):{" "}
+                      Amount (in Matic):{" "}
                       <input
                         type="number"
                         id="proposal_amount"
@@ -500,15 +418,7 @@ onChange={(e) => setDestination(e.target.value)}
                         placeholder="Enter the amount"
                       />{" "}
                       <br />
-                      Your password:{" "}
-                      <input
-                        type="password"
-                        id="trx_password"
-                        className="form-control form-control-user"
-                        value={Password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />{" "}
-                      <br />
+                      
                       <br />
                       <br />
                       <input

@@ -28,6 +28,8 @@ async function GetClubs() {
   }
   var walletAddress = localStorage.getItem("filWalletAddress");
 
+  console.log("walletaddress",walletAddress)
+
   await getContract(walletAddress);
   if(contractPublic !== undefined) {
     var clubs = await contractPublic.methods.listClubs().call()

@@ -5,32 +5,75 @@ import TokenBalance from './TokenBalance';
 import "./sidemenu.css";
 import { UseAlchemy } from './Hooks/Connection';
 import { Alchemy, Network } from "alchemy-sdk";
+import $, { error } from 'jquery'; 
+import Transak from '@biconomy/transak';
 
+import {Web3} from 'web3';
 const config = {
   apiKey: "D5xSFqtTLJe_xdCJ24O4A8S6z2tafhCv",
   network: "polygon-mumbai",
 };
 const alchemy = new Alchemy(config);
 
+const web3 = new Web3(new Web3.providers.HttpProvider("https://polygon-mumbai.infura.io/v3/95688893704a4d5bac083296c3547383"));
 
 function SideMenu({ isOpen, setIsOpen, smartAccount, logout, address }) {
+
+  function hndclck(){
+    window.open('https://mumbai.polygonscan.com/address/0xd8448C6F5Eba8C621268814961Bd32892E866adb', '_blank');
+  }
   const {ownerAddress,accountAddress,provider, handleLogin,userInfo,loading} = UseAlchemy();
   const [value, setValue] = useState(0);
+  const [value1, setValue1] = useState(0);
   const [balances, setBalances] = useState(null);
 
+  const transak = new Transak('PRODUCTION', {
+    walletAddress: address,
+    userData: {
+      firstName: userInfo?.name || '',
+      email: userInfo?.email || '',
+    },
+  });
 
+  async function checkBalance() {
+    // console.log(localStorage.getItem("LL"));
+    
+    
+    try {
+      const myWallet = localStorage.getItem("filWalletAddress");
+      if (!myWallet) {
+        // Handle the case where the wallet address is not available in localStorage
+        return;
+      }
+      
+      // Assuming you've properly initialized the web3 instance before this point
+      const balanceWei = await web3.eth.getBalance(myWallet);
+      
+      // Convert Wei to Ether (assuming Ethereum)
+      const balanceEther = web3.utils.fromWei(balanceWei, "ether");
+
+      setValue1(balanceEther)
+      
+      
+      // Update the balance on the page
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
   const handleLogout = () => {
-    setIsOpen(false);
+    
     logout();
+    setIsOpen(false);
   }
 
   const getBalances = async () => {
+    
 
 
 
     console.log(accountAddress)
-    const address = accountAddress;
+    const address = smartAccount;
 
   // Get token balances
   const balances = await alchemy.core.getTokenBalances("0x05f8d732692f087aDB447CaA20d27021FaEEe820");
@@ -68,7 +111,8 @@ function SideMenu({ isOpen, setIsOpen, smartAccount, logout, address }) {
   }
 
   useEffect(() => {
-    getBalances();
+     checkBalance();
+    // getBalances();
   }, []);
 
   return (
@@ -89,6 +133,7 @@ function SideMenu({ isOpen, setIsOpen, smartAccount, logout, address }) {
                         <h2 className="text-llg font-medium text-white">Smart Account</h2>
                         
                       </div>
+                      
                       <div className="ml-3 h-7 cross flex items-center">
                           <button className="bg-black rounded-md text-white hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white-900" onClick={() => setIsOpen(false)}>
                       
@@ -101,26 +146,32 @@ close
                     </div>
                     <hr className=' hroi'></hr>
                     <div className='text-white m-2'>
-                      <EthBadge className='text-white' address={address} />
-                      <div className="text-white text-2xl m-4">
-                        ${value.toFixed(2)}
+                      <div className='flex mml '>
+                      <EthBadge className="text-white" address={accountAddress} />
+                      <button  className="btn bg-blue-500  text-white  px-4 rounded-full" onClick={hndclck}>
+                       View on Polygon Sacn
+                        
+                      </button>
                       </div>
-                      <button className="bg-blue-500 mb-3 text-white py-2 px-4 rounded-full w-full">
+                      <div className="text-white text-2xl m-4">
+                      ${parseFloat(value).toFixed(2)}
+                      
+                      </div>
+                      <button onClick={() => transak.init()} className="bg-blue-500 mb-3 text-white py-2 px-4 rounded-full w-full">
                         Buy Crypto
                       </button>
                       <button onClick={() => handleLogout()} className="bg-blue-500 text-white py-2 px-4 rounded-full w-full">
                         Logout
                       </button>
-                      {balances && balances.map((tok, i) => {
-                        if (tok.contract_ticker_symbol === "USDC") {
-                          return (
-                            <TokenBalance key={i} name={tok.contract_ticker_symbol} value={parseInt(tok.balance) / 10**6} />
-                          )
-                        }
-                        return (
-                          <TokenBalance key={i} name={tok.contract_ticker_symbol} value={100} />
-                        )
-                      })}
+
+                      <div class='flex mx-4 mt-3'>
+  <div className=' d1 flex items-center bg-zinc-100 text-zinc-300 w-fit p-2 px-3 rounded-l-lg'>
+    <p className='d text-sm'>{'MATIC'}</p>
+    <p className= 'dd bg-zinc-800 p-1 px-3 ml-3 rounded-lg text-zinc-100'>
+      {parseFloat(value1).toFixed(2)}
+    </p>
+  </div>
+</div>
                     </div>
                   </div>
                 </div>

@@ -64,14 +64,18 @@ export const BiconomyProvider = ({ children }) => {
     if (provider?.account?.owner) {
       const owner = await provider.account.owner.getAddress();
       const smart = await provider.getAddress();
+      localStorage.setItem("filWalletAddress",await provider.getAddress());
+      localStorage.setItem("CheckLogin","Yes");
       setOwnerAddress(owner);
       setAccountAddress(smart);
     }
 
     setLoading(false);
+    
   };
 
   const Logout = () => {
+    localStorage.clear();
     setAccountAddress(null);
     setOwnerAddress(null);
   };

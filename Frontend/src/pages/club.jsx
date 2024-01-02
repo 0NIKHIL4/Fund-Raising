@@ -5,16 +5,15 @@ import {Web3} from 'web3';
 import $, { error } from 'jquery'; 
 import { useNavigate } from 'react-router-dom';
 import ABI from "../SmartContract/artifacts/contracts/InvestmentClub.sol/InvestmentClub.json"
-
+import {ethers} from 'ethers';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GetClub from "../getclub";
-
+import { UseAlchemy } from '../components/Hooks/Connection';
 import GetProposals from "../getProposals";
 
 import axios from 'axios';
 import Tg from "../components/toggle";
-
 const web3 = new Web3(new Web3.providers.HttpProvider("https://polygon-mumbai.infura.io/v3/95688893704a4d5bac083296c3547383"));
 var contractPublic = null;
 
@@ -28,195 +27,7 @@ async function getContract(userAddress) {
   }
 
 
-async function contributeClub() {
- 
-  toast.info('Contribution intiated ...', {
-    position: "top-right",
-    autoClose: 15000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "dark",
-    });
-  var walletAddress = localStorage.getItem("filWalletAddress");
-  // alert(walletAddress) /// /////
-  await getContract(walletAddress);
-  $('.successContributeClub').css('display','none');
-  $('.errorContributeClub').css('display','none');
-  var clubId = localStorage.getItem("clubId");
-  var amountAE = $('#aeAmount').val();
-  // alert(amountAE)
-  var password = $('#passwordShowPVContribute').val();
-  if(amountAE == '' || amountAE <= 0) {
-    $('.successContributeClub').css('display','none');
-    $('.errorContributeClub').css("display","block");
-    $('.errorContributeClub').text("Amount must be more than 0.");
-    return;
-  }
-  if(password == '') {
-    $('.successContributeClub').css('display','none');
-    $('.errorContributeClub').css("display","block");
-    $('.errorContributeClub').text("Password is invalid");
-    return;
-  }
-  // var my_wallet = web3.eth.accounts.wallet.load(password)[0];
-  const my_wallet = await web3.eth.accounts.wallet.load(password);
- 
-  
-  if(my_wallet !== undefined)
-  {
-    if(clubId != null) {
-      $('.successContributeClub').css("display","block");
-      $('.successContributeClub').text("Contributing to the club...");
-      
-      if(contractPublic != undefined) {
-        amountAE  = web3.utils.toWei(amountAE.toString(), 'ether');
 
-        
-        // alert(amountAE)
-        //await contractPublic.$call('contributeToClub', [clubId])
-        try {
-          // alert("Yes");
-          const query = contractPublic.methods.contributeToClub(clubId);
-          const encodedABI = query.encodeABI();
-          const accounts1 = web3.eth.accounts;
-          //  alert("Yes");
-          // console.log(accounts1)
-
-          
-
-
-            if (web3 && web3.eth) {
-              try {
-                const signedTx = await web3.eth.accounts.signTransaction(
-                  {
-                    
-                    from: my_wallet[0].address,
-                    gasPrice: "20000000000",
-                    gas: "2000000",
-                    to: contractPublic.options.address,
-                    data: encodedABI,
-                    value:amountAE,
-                   
-                   
-                  },
-                  my_wallet[0]["privateKey"],
-                  false,
-                );
-
-                hash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-                const polygonScanlink = `https://sepolia.etherscan.io/tx/${hash.transactionHash}`
-            toast.success(<a target="_blank" href={polygonScanlink}>Transaction Completed, Click to view transaction</a>, {
-              position: "top-right",
-              autoClose: 18000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-              });
-                
-                console.log('Transaction Receipt:', clubId);
-              } catch (error) {
-
-          toast.error(error);
-                console.error('Error sending signed transaction:', error);
-              }
-            } else {
-
-          toast.error(error);
-              console.error('web3 instance is not properly initialized.');
-            }
-          // var clubId = await this.web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-          console.log('Transaction Receipt:', clubId);
-          
-        } catch(e) {
-          console.log(e);
-          toast.error(e);
-          $('.successContributeClub').css('display','none');
-          $('.errorContributeClub').css("display","block");
-          $('.errorContributeClub').text(e.toString());
-          return;
-        }
-        
-        
-      }
-    }
-    $('.errorContributeClub').css('display','none');
-    $('.successContributeClub').css("display","block");
-    $('.successContributeClub').text("You have contributed to the club successfully");
-  } else {
-    $('.successContributeClub').css('display','none');
-    $('.errorContributeClub').css("display","block");
-    $('.errorContributeClub').text("Password is invalid");
-    return;
-  }
-  
-
-}
-
-async function leaveClub() {
-  $('.successJoinLeaveClub').css('display','none');
-  $('.errorJoinLeaveClub').css('display','none');
-  var clubId = localStorage.getItem("clubId");
-  var password = $('#passwordShowPVLeave').val();
-  if(password == '') {
-    $('.successJoinLeaveClub').css('display','none');
-    $('.errorJoinLeaveClub').css("display","block");
-    $('.errorJoinLeaveClub').text("Password is invalid");
-    return;
-  }
-  const my_wallet = await web3.eth.accounts.wallet.load(password);
-  if(my_wallet !== undefined)
-  {
-    
-    if(clubId != null) {
-      $('.successJoinLeaveClub').css("display","block");
-      $('.successJoinLeaveClub').text("Leaving the club...");
-      await getContract();
-      if(contractPublic != undefined) {
-        
-        const query = contractPublic.methods.leaveClub(clubId);
-        const encodedABI = query.encodeABI();
-        const signedTx = await web3.eth.accounts.signTransaction(
-          {
-            from: my_wallet[0].address,
-            gasPrice: "20000000000",
-            gas: "2000000",
-    to: contractPublic.options.address,
-    data: encodedABI,
-            //value: amountAE 
-          },
-          my_wallet[0].privateKey,
-          false
-        );
-        var clubId = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-        const polygonScanlink = `https://sepolia.etherscan.io//tx/${clubId.transactionHash}`
-            toast.success(<a target="_blank" href={polygonScanlink}>Removed from Club, Click to view transaction</a>, {
-              position: "top-right",
-              autoClose: 18000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-              });
-        }
-      }
-    $('.errorJoinLeaveClub').css('display','none');
-    $('.successJoinLeaveClub').css("display","block");
-    $('.successJoinLeaveClub').text("You have left the club successfully");
-  } else {
-    $('.successJoinLeaveClub').css('display','none');
-    $('.errorJoinLeaveClub').css("display","block");
-    $('.errorJoinLeaveClub').text("Password is invalid");
-    return;
-  }
-}
 
 
 
@@ -243,6 +54,236 @@ async function verifyUserInClub() {
 function Club() {
 
   // getdealId();
+  const {ownerAddress,accountAddress,provider, handleLogin,userInfo,loading} = UseAlchemy();
+
+
+async function leaveClub() {
+  $('.successJoinLeaveClub').css('display','none');
+  $('.errorJoinLeaveClub').css('display','none');
+  var clubId = localStorage.getItem("clubId");
+  // var password = $('#passwordShowPVLeave').val();
+  
+  const my_wallet = '123'
+  if(my_wallet !== undefined)
+  {
+    
+    if(clubId != null) {
+      $('.successJoinLeaveClub').css("display","block");
+      $('.successJoinLeaveClub').text("Leaving the club...");
+      await getContract();
+      if(contractPublic != undefined) {
+        
+        const query = contractPublic.methods.leaveClub(clubId);
+        const encodedABI = query.encodeABI();
+
+        try{
+          const abi = ABI.abi;
+            const iface = new ethers.utils.Interface(abi);
+            const encodedData = iface.encodeFunctionData("leaveClub", [clubId]);
+            const GAS_MANAGER_POLICY_ID = "479c3127-fb07-4cc6-abce-d73a447d2c01";
+        
+            provider.withAlchemyGasManager({
+              policyId: GAS_MANAGER_POLICY_ID, // replace with your policy id, get yours at https://dashboard.alchemy.com/
+              entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+            });
+        
+        const result = await provider.sendUserOperation({
+                target: marketplaceAddress, // Replace with the desired target address
+                data: encodedData, // Replace with the desired call data
+          
+              });
+        
+              const txHash = await provider.waitForUserOperationTransaction(
+                result.hash
+              );
+            
+              console.log("\nTransaction hash: ", txHash);
+            
+              const userOpReceipt = await provider.getUserOperationReceipt(
+                result.hash
+              );
+            
+              console.log("\nUser operation receipt: ", userOpReceipt);
+            
+              const txReceipt = await provider.rpcClient.waitForTransactionReceipt({
+                hash: txHash,
+              });
+            
+              console.log(txReceipt);
+              // console.log("txHash", receipt.transactionHash);
+              const polygonScanlink = `https://mumbai.polygonscan.com/tx/${txHash}`
+              toast.success(<a target="_blank" href={polygonScanlink}>Success ,Click to view transaction</a>, {
+                position: "top-right",
+                autoClose: 18000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
+          }catch(error){
+            console.log(error)
+          }
+        
+        }
+      }
+    $('.errorJoinLeaveClub').css('display','none');
+    $('.successJoinLeaveClub').css("display","block");
+    $('.successJoinLeaveClub').text("You have left the club successfully");
+  } else {
+    $('.successJoinLeaveClub').css('display','none');
+    $('.errorJoinLeaveClub').css("display","block");
+    $('.errorJoinLeaveClub').text("Password is invalid");
+    return;
+  }
+}
+
+
+  async function contributeClub() {
+    toast.info('Contribution intiated ...', {
+      position: "top-right",
+      autoClose: 15000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      });
+    var walletAddress = localStorage.getItem("filWalletAddress");
+    // alert(walletAddress) /// /////
+    await getContract(walletAddress);
+    $('.successContributeClub').css('display','none');
+    $('.errorContributeClub').css('display','none');
+    var clubId = localStorage.getItem("clubId");
+    var amountAE = $('#aeAmount').val();
+    // alert(amountAE)
+    // var password = $('#passwordShowPVContribute').val();
+    if(amountAE == '' || amountAE <= 0) {
+      $('.successContributeClub').css('display','none');
+      $('.errorContributeClub').css("display","block");
+      $('.errorContributeClub').text("Amount must be more than 0.");
+      return;
+    }
+    // if(password == '') {
+    //   $('.successContributeClub').css('display','none');
+    //   $('.errorContributeClub').css("display","block");
+    //   $('.errorContributeClub').text("Password is invalid");
+    //   return;
+    // }
+    // var my_wallet = web3.eth.accounts.wallet.load(password)[0];
+    // const my_wallet = await web3.eth.accounts.wallet.load(password);
+    const my_wallet = "123";
+   
+    
+    if(my_wallet !== undefined)
+    {
+      console.log(clubId);
+      if(clubId != null) {
+        $('.successContributeClub').css("display","block");
+        $('.successContributeClub').text("Contributing to the club...");
+        
+        if(contractPublic != undefined) {
+          amountAE  = web3.utils.toWei(amountAE.toString(), 'ether');
+  
+          
+          // alert(amountAE)
+          //await contractPublic.$call('contributeToClub', [clubId])
+          try {
+            // alert("Yes");
+            // const query = contractPublic.methods.contributeToClub(clubId);
+            // const encodedABI = query.encodeABI();
+            // const accounts1 = web3.eth.accounts;
+            //  alert("Yes");
+            // console.log(accounts1)
+  
+            
+  
+  
+              if (web3 && web3.eth) {
+                try{
+                  const abi = ABI.abi;
+                    const iface = new ethers.utils.Interface(abi);
+                    const encodedData = iface.encodeFunctionData("contributeToClub", [clubId]);
+                    const GAS_MANAGER_POLICY_ID = "479c3127-fb07-4cc6-abce-d73a447d2c01";
+                
+                    provider.withAlchemyGasManager({
+                      policyId: GAS_MANAGER_POLICY_ID, // replace with your policy id, get yours at https://dashboard.alchemy.com/
+                      entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+                    });
+                
+                const result = await provider.sendUserOperation({
+                        target: marketplaceAddress, // Replace with the desired target address
+                        data: encodedData, // Replace with the desired call data
+                        value: amountAE,
+                      });
+                
+                      const txHash = await provider.waitForUserOperationTransaction(
+                        result.hash
+                      );
+                    
+                      console.log("\nTransaction hash: ", txHash);
+                    
+                      const userOpReceipt = await provider.getUserOperationReceipt(
+                        result.hash
+                      );
+                    
+                      console.log("\nUser operation receipt: ", userOpReceipt);
+                    
+                      const txReceipt = await provider.rpcClient.waitForTransactionReceipt({
+                        hash: txHash,
+                      });
+                    
+                      console.log(txReceipt);
+                      // console.log("txHash", receipt.transactionHash);
+                      const polygonScanlink = `https://mumbai.polygonscan.com/tx/${txHash}`
+                      toast.success(<a target="_blank" href={polygonScanlink}>Success Click to view transaction</a>, {
+                        position: "top-right",
+                        autoClose: 18000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        });
+                  }catch(error){
+                    console.log(error)
+                  }
+  
+              } else {
+  
+            toast.error(error);
+                console.error('web3 instance is not properly initialized.');
+              }
+            // var clubId = await this.web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+            console.log('Transaction Receipt:', clubId);
+            
+          } catch(e) {
+            console.log(e);
+            toast.error(e);
+            $('.successContributeClub').css('display','none');
+            $('.errorContributeClub').css("display","block");
+            $('.errorContributeClub').text(e.toString());
+            return;
+          }
+          
+          
+        }
+      }
+      $('.errorContributeClub').css('display','none');
+      $('.successContributeClub').css("display","block");
+      $('.successContributeClub').text("You have contributed to the club successfully");
+    } else {
+      $('.successContributeClub').css('display','none');
+      $('.errorContributeClub').css("display","block");
+      $('.errorContributeClub').text("Password is invalid");
+      return;
+    }
+    
+  
+  }
 
   
   const [password, setPassword] = useState('');
@@ -252,14 +293,8 @@ function Club() {
     $('.successJoinLeaveClub').css('display','none');
     $('.errorJoinLeaveClub').css('display','none');
     var clubId = localStorage.getItem("clubId");
-    var password = $('#passwordShowPVJoin').val();
-    if(password == '') {
-      $('.successJoinLeaveClub').css('display','none');
-      $('.errorJoinLeaveClub').css("display","block");
-      $('.errorJoinLeaveClub').text("Password is invalid");
-      return;
-    }
-    const my_wallet = await web3.eth.accounts.wallet.load(password);
+   
+    const my_wallet = '123'
     
     if(my_wallet !== undefined)
     {
@@ -274,31 +309,55 @@ function Club() {
   
   
   
-          const nonce = await web3.eth.getTransactionCount(my_wallet[0].address);
-            if (web3 && web3.eth) {
-              try {
-                const signedTx = await web3.eth.accounts.signTransaction(
-                  {
-                    from: my_wallet[0].address,
-                    gasPrice: "20000000000",
-                    gas: "2000000",
-            to: contractPublic.options.address,
-            data: encodedABI,
-                    //value: amountAE 
-                  },
-                  my_wallet[0].privateKey,
-                  false
+          // const nonce = await web3.eth.getTransactionCount(my_wallet[0].address);
+          try{
+            const abi = ABI.abi;
+              const iface = new ethers.utils.Interface(abi);
+              const encodedData = iface.encodeFunctionData("joinClub", [clubId]);
+              const GAS_MANAGER_POLICY_ID = "479c3127-fb07-4cc6-abce-d73a447d2c01";
+          
+              provider.withAlchemyGasManager({
+                policyId: GAS_MANAGER_POLICY_ID, // replace with your policy id, get yours at https://dashboard.alchemy.com/
+                entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+              });
+          
+          const result = await provider.sendUserOperation({
+                  target: marketplaceAddress, // Replace with the desired target address
+                  data: encodedData, // Replace with the desired call data
+              
+                });
+          
+                const txHash = await provider.waitForUserOperationTransaction(
+                  result.hash
                 );
-        //
-            
-                const clubId = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-                toast.success("Club Joined");
-                console.log('Transaction ReccreateProposaleipt:', clubId);
-              } catch (error) {
-                console.error('Error sending signed transaction:', error);
-              }
-            } else {
-              console.error('web3 instance is not properly initialized.');
+              
+                console.log("\nTransaction hash: ", txHash);
+              
+                const userOpReceipt = await provider.getUserOperationReceipt(
+                  result.hash
+                );
+              
+                console.log("\nUser operation receipt: ", userOpReceipt);
+              
+                const txReceipt = await provider.rpcClient.waitForTransactionReceipt({
+                  hash: txHash,
+                });
+              
+                console.log(txReceipt);
+                // console.log("txHash", receipt.transactionHash);
+                const polygonScanlink = `https://mumbai.polygonscan.com/tx/${txHash}`
+                toast.success(<a target="_blank" href={polygonScanlink}>Joined, Click to view transaction</a>, {
+                  position: "top-right",
+                  autoClose: 18000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  });
+            }catch(error){
+              console.log(error)
             }
   
             
@@ -372,7 +431,7 @@ function Club() {
           <div className="sidebar-brand-icon rotate-n-15">
             <i className="fas fa-laugh-wink" />
           </div>
-          <div className="sidebar-brand-text mx-3">DAO CLUB</div>
+          <div className="sidebar-brand-text mx-3">Alchemy Club</div>
         </a>
         {/* Divider */}
         <hr className="sidebar-divider my-0" />
@@ -409,89 +468,7 @@ function Club() {
       {/* Main Content */}
       <div id="content">
         {/* Topbar */}
-        <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-          {/* Sidebar Toggle (Topbar) */}
-          <button
-            id="sidebarToggleTop"
-            className="btn btn-link d-md-none rounded-circle mr-3"
-            onClick={Tg}
-          >
-              <i className="fa fa-bars" />
-            </button>
-            {/* Topbar Navbar */}
-            <ul className="navbar-nav ml-auto">
-              {/* Nav Item - Search Dropdown (Visible Only XS) */}
-              <li className="nav-item dropdown no-arrow d-sm-none">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="searchDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i className="fas fa-search fa-fw" />
-                </a>
-                {/* Dropdown - Messages */}
-                <div
-                  className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                  aria-labelledby="searchDropdown"
-                >
-                  <form className="form-inline mr-auto w-100 navbar-search">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control bg-light border-0 small"
-                        placeholder="Search for..."
-                        aria-label="Search"
-                        aria-describedby="basic-addon2"
-                      />
-                      <div className="input-group-append">
-                        <button className="btn btn-primary" type="button">
-                          <i className="fas fa-search fa-sm" />
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </li>
-              <div className="topbar-divider d-none d-sm-block" />
-              {/* Nav Item - User Information */}
-              <li className="nav-item dropdown no-arrow">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="userDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <img
-                    className="img-profile rounded-circle"
-                    src="img/undraw_profile.svg"
-                  />
-                </a>
-                {/* Dropdown - User Information */}
-                <div
-                  className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                  aria-labelledby="userDropdown"
-                >
-                  <div className="dropdown-divider" />
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    data-toggle="modal"
-                    data-target="#logoutModal"
-                  >
-                    <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" />
-                    Logout and clear data from browser
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </nav>
+        
           {/* End of Topbar */}
           {/* Begin Page Content */}
           <div className="container-fluid">
@@ -510,7 +487,7 @@ function Club() {
                     <div className="row no-gutters align-items-center">
                       <div className="col mr-2">
                         <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                          Club Balance (sepolia)
+                          Club Balance (Matic)
                         </div>
                         <div className="h5 mb-0 font-weight-bold text-gray-800 club_balance">
                           -
@@ -566,62 +543,7 @@ function Club() {
                   </div>
                 </div>
               </div>
-              {/* <div className="col-xl-2 col-md-6 mb-4">
-                <div className="card border-left-primary shadow h-100 py-2">
-                  <div className="card-body">
-                    <div className="row no-gutters align-items-center">
-                      <div className="col mr-2">
-                        <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                         VERIFY YOUR DOCUMENTS (PODSI)
-                        </div>
-                       
-
-                        <div className="h5 mb-0  font-weight-bold text-gray-800 ">
-                          
-                        <input
-                        type="password"
-                        id="verifdocs"
-                        className="form-control form-control-user"
-                        placeholder="Password"
-                      />{" "}
-                        <div  className="btn btn-secondary btn-sm mt-2" onClick={verify}>
-                       
-                          DOCS VERIFICATION
-                          </div>
-                          </div>
-                      </div>
-                      
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-              {/* <div className="col-xl-2 col-md-6 mb-4">
-                <div className="card border-left-primary shadow h-100 py-2">
-                  <div className="card-body">
-                    <div className="row no-gutters align-items-center">
-                      <div className="col mr-2">
-                        <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                         VERIFY YOUR DOCUMENTS (PODSI)
-                        </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800 ">
-                          
-                        </div>
-                        <div onClick={getdealId}>
-                        
-                        <div id="dealStatusLink" className="btn btn-secondary btn-sm mt-2">
-    DAO DEAL STATUS
-  </div>
-                    
-                          </div>
-                          
-                      </div>
-                      <div className="col-auto">
-                        <i className="fas fa-calendar fa-2x text-gray-300" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
+             
             </div>
             {/* Content Row */}
             <div className="row">
@@ -655,15 +577,7 @@ function Club() {
                   </div>
                   <div className="card-body">
                     <p>
-                      Enter your password: <br />
-                      <input
-                        type="password"
-                        id="passwordShowPVJoin"
-                        className="form-control"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />{" "}
-                      <br />
+                      
                       <div id="btnJoinClub" onClick={() => {
                         joinClub();
                       }} className="btn btn-success">
@@ -693,20 +607,14 @@ function Club() {
                   </div>
                   <div className="card-body">
                     <p>
-                      Amount of sepolia: <br />
+                      Amount of Matic: <br />
                       <input
                         type="number"
                         id="aeAmount"
                         className="form-control"
                       />{" "}
                       <br />
-                      Enter your password: <br />
-                      <input
-                        type="password"
-                        id="passwordShowPVContribute"
-                        className="form-control"
-                      />{" "}
-                      <br />
+                     
                       <a
                         href="#"
                         id="btnContributeClub"
@@ -741,13 +649,7 @@ function Club() {
                   </div>
                   <div className="card-body">
                     <p>
-                      Enter your password: <br />
-                      <input
-                        type="password"
-                        id="passwordShowPVLeave"
-                        className="form-control"
-                      />{" "}
-                      <br />
+                      
                       <div  id="btnLeaveClub"  onClick={() => {
                         leaveClub();
                       }} className="btn btn-success">

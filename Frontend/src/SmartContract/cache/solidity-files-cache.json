@@ -74,8 +74,8 @@
       ]
     },
     "/home/vikash/Desktop/all_git_files/AlchemyCLub/Frontend/src/SmartContract/contracts/InvestmentClub.sol": {
-      "lastModificationDate": 1703484052743,
-      "contentHash": "daedf851573a0ed9547eaf1643d54525",
+      "lastModificationDate": 1704138736212,
+      "contentHash": "1d6461f7d342046eab2fced6a99d4ec6",
       "sourceName": "contracts/InvestmentClub.sol",
       "solcConfig": {
         "version": "0.8.10",

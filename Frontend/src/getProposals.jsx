@@ -58,7 +58,7 @@ function ChangeProposal(proposalId){
           contractNameHeader.innerHTML = 'Description';
           theadTr.appendChild(contractNameHeader);
           var contractTickerHeader = document.createElement('th');
-          contractTickerHeader.innerHTML = 'Amount (sepolia )';
+          contractTickerHeader.innerHTML = 'Amount (Matic )';
           theadTr.appendChild(contractTickerHeader);
           
   

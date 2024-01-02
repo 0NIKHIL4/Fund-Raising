@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import Tg from "./toggle";
 import { UseAlchemy } from './Hooks/Connection';
 import { ParticleNetwork } from "@particle-network/auth";
@@ -19,6 +18,7 @@ function Nav() {
   }
 
 
+
   function truncateAddress(add) {
     const len = add.length;
     if (len < 11) return add;
@@ -26,7 +26,20 @@ function Nav() {
   }
   return (
     <>
+
+
+
+
   <div className='navbar navbar-expand navbar-light bg-white topbar mb-4  shadow fixed-top-bar'>
+    <div className=" text-lg mx-3 no-underline">
+  <a
+  className="flex items-center justify-center alchemy-link"
+  href="/"
+>
+  
+  <div className=" mmh text-lg mx-3">Alchemy Club</div>
+</a>
+</div>
   <button
             id="sidebarToggleTop"
             className="btn btn-link d-md-none rounded-circle mr-3"
@@ -73,9 +86,8 @@ function Nav() {
               </li>
               {accountAddress !== null && !isOpen && (
               <>
-              <div className='flex'>
+              <div className=' name flex'>
               {userInfo.name}
-              
                  </div>
               </>
               )
@@ -97,6 +109,7 @@ function Nav() {
                   aria-expanded="false"
                 >
                   <img
+
                     className="img-profile rounded-circle"
                     src="img/undraw_profile.svg"
                   />
@@ -120,12 +133,14 @@ function Nav() {
             />
           )}
           {accountAddress == null && !loading && (
-            <button onClick={() => handleLogin()} className='connect-button' id="connect-button">Connect to Web3</button>
+            
+            <button onClick={() => handleLogin()}  class=" font-semibold bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">LOGIN</button>
+            
           )}
           
      
     
-          {loading && <button className='loading-button' id="loading-button">Loading...</button>}
+          {loading && <button className="btn bg-gradient-1 text-gray-900 transition ease-in-out duration-500 transform hover:scale-110">Loading...</button>}
         </div>
   </div>
 </>

@@ -252,3 +252,53 @@ flex-direction:row;
   justify-content: space-between;
   display: flex;
 }
+
+
+.dd{
+  background-color: #3c3838;
+}
+
+.d1{
+  border-radius: 12px;
+  background: #000206;
+  
+}
+
+.name {
+  font-weight: bolder;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.laugh {
+  text-decoration: none;
+  cursor: pointer; /* Optional: This will change the cursor to a pointer on hover, making it clear that it's clickable */
+}
+.alchemy-link {
+  
+  text-decoration: none; /* Remove default underline */
+  color:#2563EB; /* Inherit the text color from the parent */
+}
+.mmh{
+  font-size: larger;
+
+}
+
+.alchemy-link:hover {
+  text-decoration: none; /* Remove underline on hover */
+   /* Inherit the text color on hover */
+  color: inherit;
+}
+
+.mml{
+
+  display: flex;
+  align-content: space-between;
+  justify-content: space-between;
+}
+
+.alchemylink{
+  text-decoration: none;
+}

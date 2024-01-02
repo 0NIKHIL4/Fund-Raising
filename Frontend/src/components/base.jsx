@@ -128,7 +128,7 @@ function Base() {
         <div className="sidebar-brand-icon rotate-n-15">
           <i className="fas fa-laugh-wink" />
         </div>
-        <div className="sidebar-brand-text mx-3">Treasure Dao</div>
+        <div className="sidebar-brand-text mx-3">Alchemy Club</div>
       </a>
       {/* Divider */}
       <hr className="sidebar-divider my-0" />
@@ -182,7 +182,7 @@ function Base() {
                   <div className="row no-gutters align-items-center">
                     <div className="col mr-2">
                       <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Balance (sepolia)
+                        Balance (Matic)
                       </div>
                       <div className="h5 mb-0 font-weight-bold text-gray-800 view_balance_address">
                         -
@@ -266,7 +266,7 @@ function Base() {
               <div className="card shadow mb-4">
                 <div className="card-header py-3">
                   <h6 className="m-0 font-weight-bold text-primary">
-                    My Address
+                    My Smart Address
                   </h6>
                 </div>
                 <div className="card-body">
@@ -277,26 +277,16 @@ function Base() {
                   </p>
                 </div>
               </div>
-              <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Private key</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p>Enter your password: <br /><input type="password" id="passwordShowPV" class="form-control" /> <br />
-                                        <div  onClick={handleLogin} id="btnShowPrivateKey" class="btn btn-success">Show private key</div>
-                                    </p>
-                                    <p class="hiddenPV">My key: <b><span id="privateKetShowed"></span></b></p>
-                                </div>
-                            </div>
+             
               <div className="card shadow mb-4">
                 <div className="card-header py-3">
                   <h6 className="m-0 font-weight-bold text-primary">
-                  Treasure Dao
+                  Alchemy Club
                   </h6>
                 </div>
                 <div className="card-body">
                   <p>
-                  Treasure Dao is a light web wallet and Investment Club
+                  Alchemy Club is a light web wallet and Investment Club
                     platform to manage funds (treasury) created upon on chain governance.
                   </p>
                 </div>

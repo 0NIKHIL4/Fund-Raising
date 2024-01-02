@@ -232,7 +232,7 @@ contract InvestmentClub {
         require(!hasVoted(msg.sender, proposalId, clubId), "You have already voted on this proposal");
         require(keccak256(bytes(proposal.status)) == keccak256(bytes("Pending")), "The proposal is no longer pending");
         
-        proposal.voted[msg.sender] = vote;
+        // proposal.voted[msg.sender] = vote;
         
         if (vote) {
             proposal.votesFor += 1;

@@ -6,9 +6,26 @@ import { ToastContainer } from 'react-toastify';
 import { BiconomyProvider } from "./Hooks/Connection";
 import { UseAlchemy } from "./Hooks/Connection";
 
+
 import Nav from "./nav";
 const Layout = () => {
-  const {Account,smartAccountAddress,provider, handleLogin} = UseAlchemy();
+  const {ownerAddress,accountAddress,provider, handleLogin,userInfo,loading,Logout} = UseAlchemy();
+
+
+  useEffect(() => {
+    {
+      const checkLog = localStorage.getItem("CheckLogin") ;
+      // const check = userInfo;
+
+      console.log(checkLog);
+
+      if(checkLog == "Yes"){
+        handleLogin();
+      }
+    }
+  }, []);
+
+  
   
   return (
     
