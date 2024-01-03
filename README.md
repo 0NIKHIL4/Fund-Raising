@@ -59,9 +59,11 @@ Therefore, through DAO (decentralized organizations) we can create structures so
 - web2 user  onboard: I  am uisng particle network for the Login which show Common authentication mechnaism like Google,Discord,Facebook
 
   ![Screenshot from 2024-01-03 06-44-03](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/dbab93d4-55e6-4b23-ba46-a2e2239d592d)
-  
 
-![Screenshot from 2024-01-03 06-44-49](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/9b866d8e-fde3-4065-ab0d-aa0cf472ca5d)
+  **SCA inbuilt wallet for easy acess for naive users**
+![Screenshot from 2024-01-03 07-04-00](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/2a770213-5db2-45e6-935e-b769bb203299)
+
+
 
 -- User Operation :  All useroperation started with this code 
 
