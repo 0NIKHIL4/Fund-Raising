@@ -43,11 +43,44 @@ Therefore, through DAO (decentralized organizations) we can create structures so
 
 # Features of Alchemy Club
 
-- Gasless Transaction: 
+- Gasless Transaction:  Gas Manager will pay for the gas fee to execute this userOp demonstrating the sponsorship part.
 
+ **Gas Manager Dasboard**
 
+ ![Screenshot from 2024-01-03 06-39-18](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/ba038927-7415-45da-82b6-f2d279981d91)
 
+![Screenshot from 2024-01-03 06-38-51](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/0e4a65ca-1875-40df-b711-20eb79388d2e)
 
+**Transaction**
+
+![Screenshot from 2024-01-03 06-30-54](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/5437935a-38a0-4f04-aad3-1c76f785e392)
+
+- web2 user  onboard: I  am uisng particle network for the Login which show Common authentication mechnaism like Google,Discord,Facebook
+
+  ![Screenshot from 2024-01-03 06-44-03](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/dbab93d4-55e6-4b23-ba46-a2e2239d592d)
+  
+
+![Screenshot from 2024-01-03 06-44-49](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/9b866d8e-fde3-4065-ab0d-aa0cf472ca5d)
+
+-- User Operation :  All useroperation started with this code 
+
+```
+const result = await provider.sendUserOperation({
+                target: marketplaceAddress, // Replace with the desired target address
+                data: encodedData, // Replace with the desired call data
+              });
+        
+              const txHash = await provider.waitForUserOperationTransaction(
+                result.hash
+              );
+            
+              console.log("\nTransaction hash: ", txHash);
+            
+              const userOpReceipt = await provider.getUserOperationReceipt(
+                result.hash
+              );
+```
+All code for   Smart  Contract Account  & connnection to Particle network can be found here: https://github.com/Vikash-8090-Yadav/AlchemyCLub/blob/main/Frontend/src/components/Hooks/Connection.jsx
 
 <be>
 
