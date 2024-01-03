@@ -10,14 +10,6 @@ Trasure Dao Club allows you to manage investment clubs, and to spread access to 
 
 <br>
 
-### It solves Challenge 1 On-chain Query Execution for Next-Gen Blockchain and I built this 
-
-Decentralized Autonomous Organizations (DAOs): DAOs operate on smart contracts and rely heavily on on-chain data. Enhanced on-chain query abilities could enable more sophisticated governance mechanisms, more transparent decision-making processes, and improve the overall efficiency of DAO operations.
-
-
-
-
-  
 ## 📋 Table of Contents
 
 - [Introduction](#introduction)
@@ -35,17 +27,13 @@ Decentralized Autonomous Organizations (DAOs): DAOs operate on smart contracts a
  
 ## 💡Introduction
 
-In the ever-evolving landscape of decentralized finance, AlchemyClub Dao Club emerges as a groundbreaking platform, offering a seamless solution for managing investment clubs and democratizing access to investment funds. This innovative platform is designed to be decentralized, agile, and free from bureaucratic hurdles, providing users with unparalleled flexibility in their investment strategies.
-
-DataDAO members can create and vote on proposals, covering aspects such as member management, dataset storage and distribution, and token distribution. This ensures a democratic and transparent decision-making process within the DAO.
-One of the standout features of DAO CLUB is its commitment to decentralization. Through the use of blockchain technology, the platform ensures that investment club data is transparent, secure, and immutable. This decentralized approach eliminates the need for intermediaries, putting control directly into the hands of the users.'
 
 
-## Smart Contract deployed on Sepolia testnet
-- Smart contract Address - 0xcBbAeBdC163e0Cd487903c85213b7F5629a03F8A
-- https://sepolia.etherscan.io/address/0xcbbaebdc163e0cd487903c85213b7f5629a03f8a
 
-  ![Screenshot from 2023-12-22 14-29-47](https://github.com/Vikash-8090-Yadav/TreasureGrant/assets/85225156/40b254d6-83d7-4555-ad8c-5a0551e339ec)
+## Smart Contract deployed on Polygon testnet
+- Smart contract Address - 0xd8448c6f5eba8c621268814961bd32892e866adb
+- https://mumbai.polygonscan.com/address/0xd8448c6f5eba8c621268814961bd32892e866adb
+![Screenshot from 2024-01-03 06-17-57](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/4699f21d-3ac4-4d35-8c5a-465bcd1b8378)
 
 # What it does
 
