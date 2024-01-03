@@ -8,6 +8,12 @@
 
 Trasure Dao Club allows you to manage investment clubs, and to spread access to participate in investment funds to anyone, decentralized, agile, and without bureaucracy.Implementing a comprehensive on-chain governance system allows DataDAO members to create and vote on proposals, covering aspects such as member management, dataset storage and distribution, and token distribution. This ensures a democratic and transparent decision-making process within the DAO.
 
+For years I have wanted to participate in fund initiatives to invest in projects (startups and others), but the bureaucracy, the high requirements, and many other problems make it very difficult. And it is something that not only I experience, but also many other people who have a little money and want to support projects in the medium/long term.
+
+The exact size of the private investment fund market is difficult to determine, as there is no single, comprehensive source of data. However, it is estimated that this market has experienced significant growth in recent decades. According to Bain & Company's Global Private Equity Report 2021, assets under management in the private equity industry reached a record of approximately US$4.6 trillion in 2020. In addition to traditional private equity, there are also other types of private investment funds, such as hedge funds, venture capital funds, and private debt funds. Each of these segments has distinct characteristics and investment approaches.
+
+Therefore, through DAO (decentralized organizations) we can create structures so that anyone can invest, through investment clubs (by affinity of ideas, professional relationship, etc.) through Blockchain from anywhere in the world and with fewer requirements. That is why Alchemy Club  was born.
+
 <br>
 
 ## 📋 Table of Contents
@@ -35,44 +41,9 @@ Trasure Dao Club allows you to manage investment clubs, and to spread access to 
 - https://mumbai.polygonscan.com/address/0xd8448c6f5eba8c621268814961bd32892e866adb
 ![Screenshot from 2024-01-03 06-17-57](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/4699f21d-3ac4-4d35-8c5a-465bcd1b8378)
 
-# What it does
+# Features of Alchemy Club
 
-## Create Data Dao Investment Clubs
-
-- Users can easily create investment clubs by providing a club name.
-- The club becomes associated with the account of the user who creates it (owner).
-![Screenshot from 2023-12-21 04-37-17](https://github.com/Vikash-8090-Yadav/Dao-Club/assets/85225156/f799ed27-e9dd-4d82-82b1-fa7ac920b316)
-
-
-## Join or Leave and Contribute to the Club 
-- Data Dao Members can contribute to the common fund (pool) by depositing ICP coins.
-- Contributions can be utilized in proposals.
-  
-![gallery](https://github.com/Vikash-8090-Yadav/TreasureGrant/assets/85225156/75f15263-0113-4353-aaee-acb073b98791)
-
-
-
-Transaction after contribution 
-![image](https://github.com/Vikash-8090-Yadav/TreasureGrant/assets/85225156/e2caf135-037d-4f77-9634-6d846c2c4efe)
-
-
-## Create and Vote on Proposals
-
-- Members who contribute funds to the club pool can create proposals.
-- Proposals include a description, amount (not exceeding the pool amount), and recipient for potential investments.
-- All members can approve or reject proposals with one vote per member on each proposal.
-  
-![gallery (1)](https://github.com/Vikash-8090-Yadav/TreasureGrant/assets/85225156/530f1ebf-04c2-4215-a07a-7117c867ea52)
-
-
-
-## Execute and Close proposal
-
-- Proposal owners, with greater approval than rejection, can execute proposals.
-- Can't execute in voting periods which last for 5 min after creation. 
-- This action transfers the proposal amount to the specified recipient.
-- Owners can also close proposals for various reasons, such as cancellation or to avoid sending funds.
-- ![gallery (2)](https://github.com/Vikash-8090-Yadav/TreasureGrant/assets/85225156/9c3f6bbc-8e2f-4b7f-b922-f08c13e77737)
+- Gasless Transaction: 
 
 
 
@@ -89,9 +60,17 @@ Transaction after contribution
 - Run Proposals: A proposal owner can execute a proposal (if approval is greater than rejection), which will cause the proposal amount to be sent to the specified recipient. The owner can also close a proposal, in case of not continuing with it, either as a cancellation, publication error or to avoid sending funds.
 
 
+## Restrictions
+The club smart contract has some restrictions, similar to real hedge funds:
+
+- Up to 99 members per club (in many jurisdictions, such as the USA and Chile, this is the maximum limit of club members for certain purposes and types of clubs).
+- Only members can participate in club instances.
+- Only members who contribute funds to a club have the right to create proposals.
+- Only proposal creators can execute them.
+
+
 ## 💥 Challenges we ran into
-- Understanding Dao is very critical and took me more than 4 hours to get the best idea to build
-- I faced lots of issue in smart contract as I have to manage all the funds, proposal, voting periods and many more things but at the end I enjoyed a lot during the building time.I preferred that all It was 100% web without a backend other than the smart contract, so any other developer or person can test it in any environment.
+
 
     
 <br>
