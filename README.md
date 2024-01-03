@@ -1,7 +1,8 @@
 
 #  This project is made under PUSH BRB HACKATHON
 
-![Screenshot from 2023-12-22 14-02-07](https://github.com/Vikash-8090-Yadav/TreasureGrant/assets/85225156/73186902-2b66-4376-b36d-3714241fd3ac)
+![Screenshot from 2024-01-03 06-49-56](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/688f9fa8-0fdb-4cd8-8b29-08ea09da99c1)
+
 
 
 # AlchemyClub Dao Club
@@ -91,6 +92,7 @@ All code for   Smart  Contract Account  & connnection to Particle network can be
 - Contribute to the club: Any member of a club can contribute to the common fund (pool), depositing AE coins that can be used in proposals.
 - Create and Vote on Proposals: Any member who has contributed funds to the club pool can create proposals, giving a description, amount (not to exceed the pool amount), and recipient, with a view to investing in any business/person in a project. Also, all members can approve or reject the proposal (only one vote per member is allowed on each proposal).
 - Run Proposals: A proposal owner can execute a proposal (if approval is greater than rejection), which will cause the proposal amount to be sent to the specified recipient. The owner can also close a proposal, in case of not continuing with it, either as a cancellation, publication error or to avoid sending funds.
+- Timing voting:  After  creation of proposal there is only about 5 min time is given to the  mmeber to  vote.
 
 
 ## Restrictions
@@ -103,7 +105,8 @@ The club smart contract has some restrictions, similar to real hedge funds:
 
 
 ## 💥 Challenges we ran into
-
+I faced issue with the accout abstraction  bundler and gas manager.
+I faced issue with the persistance of Particle network gets solved  by the mentor: https://github.com/Vikash-8090-Yadav/AlchemyCLub/pull/1
 
     
 <br>
@@ -123,7 +126,7 @@ The club smart contract has some restrictions, similar to real hedge funds:
     <tr>
       <td>Vercel</td>
       <td>
-        https://treasure-grant.vercel.app/
+        https://alchemy-c-lub.vercel.app/
       </td>
     </tr>
     </tr>
@@ -133,14 +136,14 @@ The club smart contract has some restrictions, similar to real hedge funds:
 
 ## 🚀 Setting up the project locally
 
-To run the Edu.dev locally, follow these steps:
+To run the  Alchemy Club locally, follow these steps:
 1. Clone the repository:
  ```bash
- git clone  https://github.com/Vikash-8090-Yadav/TreasureGrant.git
+ git clone  https://github.com/Vikash-8090-Yadav/AlchemyCLub.git
  ```
  2. Navigate to the project directory:
 ```bash
-cd  TreasureGrant
+cd  AlchemyCLub
 ```
 3. Node Re-versioning
 
@@ -176,6 +179,7 @@ Open your web browser and visit the URL SHOWING IN UR TERMINAL to interact with 
 | Tailwind CSS      | Utility-first CSS framework for building custom designs   | [Tailwind CSS](https://tailwindcss.com/)              |
 | Solidity | Programming language used for smart contract development on the Ethereum blockchain | https://docs.soliditylang.org/ |
 |LightHouse | Store file Secure, Reliable, & Lightning-Fast with Lighthouse. |https://www.lighthouse.storage/|
+| Alchmey| The most reliable way to build web3 apps Powerful set of APIs, SDKs, and tools to build and scale your web3 app with ease.| https://www.alchemy.com/|
 
 
 
@@ -184,6 +188,7 @@ Open your web browser and visit the URL SHOWING IN UR TERMINAL to interact with 
 
 ## 🎥 Video Demo
 
+https://youtu.be/TzTiBTY_O1A
 
 
 ## 🤝 Contributing
