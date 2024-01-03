@@ -20,7 +20,6 @@ Therefore, through DAO (decentralized organizations) we can create structures so
 ## 📋 Table of Contents
 
 - [Introduction](#introduction)
-- [What It Does ?](#what-it-does)
 - [Installation](#-setting-up-the-project-locally)
 - [Challenges we ran into](#-challenges-we-ran-into)
 - [Technologies we used](#%EF%B8%8Ftechnologies-we-used)
@@ -31,14 +30,10 @@ Therefore, through DAO (decentralized organizations) we can create structures so
 <a href="#top">Back to top</a>
 
 
- 
-## 💡Introduction
-
-
 
 
 ## Smart Contract deployed on Polygon testnet
-- Smart contract Address - 0xd8448c6f5eba8c621268814961bd32892e866adb
+- Smart contract Account - 0xd8448c6f5eba8c621268814961bd32892e866adb
 - https://mumbai.polygonscan.com/address/0xd8448c6f5eba8c621268814961bd32892e866adb
 ![Screenshot from 2024-01-03 06-17-57](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/4699f21d-3ac4-4d35-8c5a-465bcd1b8378)
 
@@ -86,6 +81,8 @@ const result = await provider.sendUserOperation({
 All code for   Smart  Contract Account  & connnection to Particle network can be found here: https://github.com/Vikash-8090-Yadav/AlchemyCLub/blob/main/Frontend/src/components/Hooks/Connection.jsx
 
 <be>
+
+## 💡Introduction
 
 ## What you can currently do in this version is:
 
