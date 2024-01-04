@@ -3,7 +3,9 @@ import { AlchemyProvider } from "@alchemy/aa-alchemy";
 import { LightSmartContractAccount } from "@alchemy/aa-accounts";
 import { ParticleSigner } from "@tabascoweb3/aa-signers/particle";
 import { polygonMumbai } from "viem/chains";
+import {Web3} from 'web3';
 
+const web3 = new Web3(new Web3.providers.HttpProvider("https://polygon-mumbai.infura.io/v3/95688893704a4d5bac083296c3547383"));
 const entryPointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
 
 const AlchemyContext = React.createContext({
@@ -65,6 +67,12 @@ export const BiconomyProvider = ({ children }) => {
       const owner = await provider.account.owner.getAddress();
       const smart = await provider.getAddress();
       localStorage.setItem("filWalletAddress",await provider.getAddress());
+      const balanceWei = await web3.eth.getBalance(await provider.getAddress());
+      
+      // Convert Wei to Ether (assuming Ethereum)
+      const balanceEther = web3.utils.fromWei(balanceWei, "ether");
+      localStorage.setItem("smartbal",balanceEther);
+      
       localStorage.setItem("CheckLogin","Yes");
       setOwnerAddress(owner);
       setAccountAddress(smart);

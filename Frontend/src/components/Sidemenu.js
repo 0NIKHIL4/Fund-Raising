@@ -26,6 +26,7 @@ function SideMenu({ isOpen, setIsOpen, smartAccount, logout, address }) {
   const [value, setValue] = useState(0);
   const [value1, setValue1] = useState(0);
   const [balances, setBalances] = useState(null);
+  const smarbal = localStorage.getItem("smartbal");
 
   const transak = new Transak('PRODUCTION', {
     walletAddress: address,
@@ -154,7 +155,7 @@ close
                       </button>
                       </div>
                       <div className="text-white text-2xl m-4">
-                      ${parseFloat(value1).toFixed(2)}
+                      ${parseFloat(value).toFixed(2)}
                       
                       </div>
                       <button onClick={() => transak.init()} className="bg-blue-500 mb-3 text-white py-2 px-4 rounded-full w-full">
@@ -168,7 +169,7 @@ close
   <div className=' d1 flex items-center bg-zinc-100 text-zinc-300 w-fit p-2 px-3 rounded-l-lg'>
     <p className='d text-sm'>{'MATIC'}</p>
     <p className= 'dd bg-zinc-800 p-1 px-3 ml-3 rounded-lg text-zinc-100'>
-      {parseFloat(value1).toFixed(2)}
+      {parseFloat(smarbal).toFixed(4)}
     </p>
   </div>
 </div>
