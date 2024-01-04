@@ -154,7 +154,7 @@ close
                       </button>
                       </div>
                       <div className="text-white text-2xl m-4">
-                      ${parseFloat(value).toFixed(2)}
+                      ${parseFloat(value1).toFixed(2)}
                       
                       </div>
                       <button onClick={() => transak.init()} className="bg-blue-500 mb-3 text-white py-2 px-4 rounded-full w-full">
