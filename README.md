@@ -1,5 +1,5 @@
 
-#  This project is made under PUSH BRB HACKATHON
+
 
 ![Screenshot from 2024-01-03 06-49-56](https://github.com/Vikash-8090-Yadav/AlchemyCLub/assets/85225156/688f9fa8-0fdb-4cd8-8b29-08ea09da99c1)
 
